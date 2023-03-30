@@ -16,6 +16,7 @@ def drop_duplicated_candidates(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_twitter_username(link):
+    """Extrai o username do Twitter a partir da URL"""
     if link and isinstance(link, str):
         link = link.rstrip('/')
         username = link.split('/')[-1]
@@ -30,9 +31,8 @@ def process_candidates_dataset() -> pd.DataFrame:
     Carrega os dados dos candidatos e suas redes sociais (obtidos no TSE), 
     mescla em um único dataset, filtra somente candidatos a deputado estadual e
     remove linhas de candidatos repetidos.
-    O resultado final é salvo em um arquivo CSV no diretório `data/processed`.
+    O resultado final é salvo em um arquivo CSV.
     """
-    
     # Carregando os datasets do TSE
     raw_candidates_dataset_name = 'consulta_cand_2022_SP.csv'
     raw_social_networks_dataset_name = 'rede_social_candidato_2022_SP.csv'
@@ -71,7 +71,7 @@ def process_candidates_dataset() -> pd.DataFrame:
 @task
 def scrape_twitter_data(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Realiza o scraping dos dados dos candidatos do Twitter.
+    Realiza o scraping dos dados das contas Twitter dos candidatos, e adiciona no DataFrame.
     """
     logger = get_run_logger()
     usernames = list(df['TW_USER'])
@@ -130,6 +130,9 @@ def scrape_twitter_data(df: pd.DataFrame) -> pd.DataFrame:
 
 @task
 def scrape_tweets_count(df: pd.DataFrame, since: str='2022-09-01', until: str='2022-11-01') -> pd.DataFrame:
+    """
+    Realiza o scraping dos tweets dos candidatos no período solicitado, e adiciona no DataFrame.
+    """
     logger = get_run_logger()
     usernames = list(df['TW_USER'])
     logger.info(f'Scrapping tweets count for {len(usernames)} users')
