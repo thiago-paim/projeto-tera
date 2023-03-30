@@ -18,8 +18,7 @@ prefect cloud login
 
 ## Rodando um pipeline
 ```
-cd src/
-python src/main.py 
+python src/candidates.py 
 ```
 
 # Sobre o projeto
@@ -32,7 +31,7 @@ Principais pastas e arquivos do projeto:
 - `data/raw/`: Armazena os datasets iniciais "crus" (antes de qualquer processamento)
 - `notebooks/`: Armazena os notebooks, usados para experimentos e provas de conceito
 - `src/`: Armazena os códigos dos pipelines e outros scripts
-- `src/candidates.py`: Funções e tasks para processamento dos dados de candidatos
+- `src/candidates.py`: Funções, tasks e flows relacionados ao processamento dos dados de candidatos
 - `src/config.py`: Configurações e variáveis gerais do projeto
 - `src/main.py`: Pipeline principal
 - `src/utils.py`: Funções de uso mais geral

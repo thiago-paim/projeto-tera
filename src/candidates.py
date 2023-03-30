@@ -1,5 +1,5 @@
 import pandas as pd
-from prefect import task, get_run_logger
+from prefect import flow, task, get_run_logger
 import snscrape.modules.twitter as sntwitter
 from utils import load_raw_dataset, save_dataset
 from config import PROCESSED_DATASETS_PATH, RAW_DATASETS_PATH
@@ -168,3 +168,18 @@ def scrape_tweets_count(df: pd.DataFrame, since: str='2022-09-01', until: str='2
     save_dataset(df, file_name)
     
     return df
+
+
+@flow(name="Process Candidates data")
+def process_candidates_data():
+    logger = get_run_logger()
+    logger.info("Starting Process Candidates data flow")
+    
+    df = process_candidates_dataset()
+    df = scrape_twitter_data(df)
+    df = scrape_tweets_count(df)
+    return df.shape
+
+
+if __name__ == "__main__":
+    process_candidates_data()
