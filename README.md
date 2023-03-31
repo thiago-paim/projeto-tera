@@ -16,9 +16,14 @@ prefect cloud login
 ```
 
 
-## Rodando um pipeline
+## Rodando pipeline de candidatos
 ```
 python src/candidates.py 
+```
+
+## Rodando pipeline de processamento de tweets
+```
+python -m src.tweets.flow
 ```
 
 # Sobre o projeto
