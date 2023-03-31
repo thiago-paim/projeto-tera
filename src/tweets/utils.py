@@ -1,6 +1,7 @@
 import nltk
 import pandas as pd
 import re
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import spacy
 
 nltk.download('stopwords')
@@ -45,4 +46,15 @@ def lemmatize(text):
     return " ".join(tokens)
 
 def tokenize(text):
-    return [word for word in text.split()] 
+    return [word for word in text.split()]
+
+
+def get_bag_of_words(tweets: pd.Series) -> pd.Series:
+    bow_vectorizer = CountVectorizer()
+    bow = bow_vectorizer.fit_transform(tweets)
+    bow = pd.DataFrame(bow.todense())
+
+    # Atribuindo nomes das colunas aos termos
+    vocabulary_map = {v: k for k, v in bow_vectorizer.vocabulary_.items()}
+    bow.columns = bow.columns.map(vocabulary_map)
+    return bow

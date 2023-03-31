@@ -1,7 +1,7 @@
 import pandas as pd
 from prefect import flow, task, get_run_logger
 from ..common import load_raw_dataset, save_dataset, drop_duplicated_rows
-from .utils import drop_unused_tweet_columns, filter_letters, remove_stopwords, lemmatize, tokenize
+from .utils import drop_unused_tweet_columns, filter_letters, remove_stopwords, lemmatize, tokenize, get_bag_of_words
 
 
 @task
@@ -27,7 +27,13 @@ def get_tweets_by_username(df: pd.DataFrame, username: str) -> pd.Series:
  
 @task
 def pre_process_tweets(tweets: pd.Series) -> pd.Series:
-    pass
+    def pre_process(text: str):
+        text = filter_letters(text)
+        text = remove_stopwords(text)
+        return lemmatize(text)
+
+    processed_tweets = tweets.apply(pre_process)
+    return processed_tweets
 
 
 @flow(name="Process Erikas Tweets")
@@ -40,8 +46,10 @@ def process_erikas_tweets():
     
     df = load_tweets_dataset(file_name)
     tweets = get_tweets_by_username(df, username)
+    tweets = pre_process_tweets(tweets)
     
-    return len(tweets)
+    bow = get_bag_of_words(tweets)
+    return None
 
 
 if __name__ == "__main__":

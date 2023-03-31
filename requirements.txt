@@ -3,6 +3,7 @@ jupyterlab==3.6.2
 nltk==3.8.1
 pandas==1.5.3
 prefect==2.9.0
+scikit-learn==1.2.2
 seaborn==0.12.2
 snscrape==0.6.1.20230314
 tqdm==4.64.1
