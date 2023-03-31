@@ -15,13 +15,13 @@ Faça [login no Prefect Cloud](https://docs.prefect.io/ui/cloud-quickstart/#log-
 prefect cloud login
 ```
 
+## Rodando pipelines
 
-## Rodando pipeline de candidatos
+### Processamento de dados de candidatos
 ```
-python src/candidates.py 
+python -m src.candidates.flow
 ```
-
-## Rodando pipeline de processamento de tweets
+### Processamento de tweets
 ```
 python -m src.tweets.flow
 ```
