@@ -2,7 +2,6 @@ import pandas as pd
 from prefect import flow, task, get_run_logger
 import snscrape.modules.twitter as sntwitter
 from utils import load_raw_dataset, save_dataset
-from config import PROCESSED_DATASETS_PATH, RAW_DATASETS_PATH
 
 
 def drop_duplicated_candidates(df: pd.DataFrame) -> pd.DataFrame:
