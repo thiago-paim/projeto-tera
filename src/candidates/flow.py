@@ -1,7 +1,7 @@
 import pandas as pd
 from prefect import flow, task, get_run_logger
 import snscrape.modules.twitter as sntwitter
-from ..utils import load_raw_dataset, save_dataset
+from ..common import load_raw_dataset, save_dataset
 from .utils import drop_duplicated_candidates, get_twitter_username
 
 
@@ -152,6 +152,13 @@ def scrape_tweets_count(df: pd.DataFrame, since: str='2022-09-01', until: str='2
 
 @flow(name="Process Candidates data")
 def process_candidates_data():
+    """Pipeline de processamento dos dados dos candidatos
+    - Carrega os arquivos do TSE com dados dos candidatos e suas redes sociais, e junta ambos em um só, 
+    - Filtra os candidatos a deputado estadual que possuem conta no Twitter
+    - Realiza um scrapping no Twitter para obter informações sobre as contas dos deputados, e também a quantidade de tweets postados no período da eleição
+    
+    Uma nova versão do dataset é salvo a cada etapa, com nome "candidates_output_N".
+    """
     logger = get_run_logger()
     logger.info("Starting Process Candidates data flow")
     

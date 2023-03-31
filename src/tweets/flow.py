@@ -1,6 +1,6 @@
 import pandas as pd
 from prefect import flow, task, get_run_logger
-from ..utils import load_raw_dataset, save_dataset, drop_duplicated_rows
+from ..common import load_raw_dataset, save_dataset, drop_duplicated_rows
 from .utils import drop_unused_tweet_columns, filter_letters, remove_stopwords, lemmatize, tokenize
 
 

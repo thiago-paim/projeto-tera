@@ -36,10 +36,11 @@ Principais pastas e arquivos do projeto:
 - `data/raw/`: Armazena os datasets iniciais "crus" (antes de qualquer processamento)
 - `notebooks/`: Armazena os notebooks, usados para experimentos e provas de conceito
 - `src/`: Armazena os códigos dos pipelines e outros scripts
-- `src/candidates.py`: Funções, tasks e flows relacionados ao processamento dos dados de candidatos
+- `src/candidates/`: Funções, tasks e flows relacionados ao processamento dos dados de candidatos
+- `src/tweets/`: Funções, tasks e flows relacionados ao processamento de tweets
 - `src/config.py`: Configurações e variáveis gerais do projeto
 - `src/main.py`: Pipeline principal
-- `src/utils.py`: Funções de uso mais geral
+- `src/common.py`: Funções de uso geral
 
 ## Fonte de dados
 Dados sobre candidatos extraídos do [Portal de Dados Abertos do TSE](https://dadosabertos.tse.jus.br/dataset/candidatos-2022).
