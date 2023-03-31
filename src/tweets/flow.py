@@ -1,3 +1,4 @@
+from mlflow import log_metric, log_param, log_artifacts
 import pandas as pd
 from prefect import flow, task, get_run_logger
 from ..common import load_raw_dataset, save_dataset, drop_duplicated_rows
@@ -40,14 +41,17 @@ def pre_process_tweets(tweets: pd.Series) -> pd.Series:
 def process_erikas_tweets():
     logger = get_run_logger()
     logger.info("Starting Process Erikas Tweets flow")
-    
     file_name = 'ErikakHilton-2022-10-01-2022-11-01-2023-02-16T19:31:01.224464.csv'
     username = 'https://twitter.com/ErikakHilton'
+    log_param("file_name", file_name)
+    log_param("username", username)
     
     df = load_tweets_dataset(file_name)
-    tweets = get_tweets_by_username(df, username)
-    tweets = pre_process_tweets(tweets)
     
+    tweets = get_tweets_by_username(df, username)
+    log_param("tweets_count", len(tweets))
+    
+    tweets = pre_process_tweets(tweets)
     bow = get_bag_of_words(tweets)
     return None
 
