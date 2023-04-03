@@ -20,3 +20,8 @@ def drop_unused_tweet_columns(df: pd.DataFrame) -> pd.DataFrame:
     ]
     df = df.drop(drop_columns, axis=1)
     return df
+
+
+def get_tweets_by_username(df: pd.DataFrame, username: str) -> pd.Series:
+    tweets = df[df.user == username]
+    return tweets
