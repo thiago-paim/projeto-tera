@@ -164,8 +164,8 @@ def process_candidates_data():
     logger.info("Starting Process Candidates data flow")
     
     df = process_candidates_dataset()
-    # df = scrape_twitter_data(df)
-    # df = scrape_tweets_count(df)
+    df = scrape_twitter_data(df)
+    df = scrape_tweets_count(df)
     return df.shape
 
 
