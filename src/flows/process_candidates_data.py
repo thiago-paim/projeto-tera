@@ -2,7 +2,7 @@ import pandas as pd
 from prefect import flow, task, get_run_logger
 import snscrape.modules.twitter as sntwitter
 from ..common import load_raw_dataset, save_dataset
-from .utils import drop_duplicated_candidates, get_twitter_username
+from ..preprocess import drop_duplicated_candidates, get_twitter_username
 
 
 @task
