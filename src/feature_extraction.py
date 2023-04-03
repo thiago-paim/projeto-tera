@@ -1,4 +1,5 @@
 import pandas as pd
+from scipy.sparse._csr import csr_matrix
 from sklearn.feature_extraction.text import CountVectorizer
 
 
@@ -16,12 +17,14 @@ def tokenize(text):
     return [word for word in text.split()]
 
 
-def get_bag_of_words(tweets: pd.Series) -> pd.Series:
+def bag_of_words(tweets: pd.Series) -> pd.Series:
     bow_vectorizer = CountVectorizer()
-    bow = bow_vectorizer.fit_transform(tweets)
-    bow = pd.DataFrame(bow.todense())
-
+    X = bow_vectorizer.fit_transform(tweets)
+    
+    # Converte de volta para DataFrame
+    X = pd.DataFrame(X.todense())
+    
     # Atribuindo nomes das colunas aos termos
     vocabulary_map = {v: k for k, v in bow_vectorizer.vocabulary_.items()}
-    bow.columns = bow.columns.map(vocabulary_map)
-    return bow
+    X.columns = X.columns.map(vocabulary_map)
+    return X
