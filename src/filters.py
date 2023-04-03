@@ -11,6 +11,12 @@ def drop_duplicated_candidates(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def drop_duplicated_rows(df: pd.DataFrame) -> pd.DataFrame:
+    duplicated_indexes = df[df.duplicated()].index
+    df = df.drop(duplicated_indexes)
+    return df
+
+
 def drop_unused_tweet_columns(df: pd.DataFrame) -> pd.DataFrame:
     drop_columns = [
         'renderedContent',  # Possui praticamente o mesmo que a rawContent
