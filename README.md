@@ -19,11 +19,16 @@ prefect cloud login
 
 ### Processamento de dados de candidatos
 ```
-python -m src.candidates.flow
+python -m src.flows.process_candidates_data
 ```
 ### Processamento de tweets
 ```
-python -m src.tweets.flow
+python -m src.flows.process_erikas_tweets
+```
+
+### Visualizando no MLflow
+```
+mlflow ui
 ```
 
 # Sobre o projeto
@@ -36,11 +41,15 @@ Principais pastas e arquivos do projeto:
 - `data/raw/`: Armazena os datasets iniciais "crus" (antes de qualquer processamento)
 - `notebooks/`: Armazena os notebooks, usados para experimentos e provas de conceito
 - `src/`: Armazena os códigos dos pipelines e outros scripts
-- `src/candidates/`: Funções, tasks e flows relacionados ao processamento dos dados de candidatos
-- `src/tweets/`: Funções, tasks e flows relacionados ao processamento de tweets
-- `src/config.py`: Configurações e variáveis gerais do projeto
-- `src/main.py`: Pipeline principal
+- `src/flows/`: Cada arquivo contém um flow e suas tasks relacionadas
 - `src/common.py`: Funções de uso geral
+- `src/config.py`: Configurações e variáveis gerais do projeto
+- `src/feature_extraction.py`: Funções relacionadas a extração de features
+- `src/filters.py`: Funções relacionadas a remoção de linhas e colunas
+- `src/preprocess.py`: Funções relacionadas a pré-processamento de dados
+
+
+
 
 ## Fonte de dados
 Dados sobre candidatos extraídos do [Portal de Dados Abertos do TSE](https://dadosabertos.tse.jus.br/dataset/candidatos-2022).
