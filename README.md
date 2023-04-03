@@ -26,6 +26,11 @@ python -m src.candidates.flow
 python -m src.tweets.flow
 ```
 
+### Visualizando no MLflow
+```
+mlflow ui
+```
+
 # Sobre o projeto
 
 ## Arquitetura
