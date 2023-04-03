@@ -38,21 +38,20 @@ def extract_features(df: pd.DataFrame) -> pd.DataFrame:
     return bow
 
 
-
 @flow(name="Process Erikas Tweets")
 def process_erikas_tweets():
     logger = get_run_logger()
     logger.info("Starting Process Erikas Tweets flow")
+    
     file_name = 'ErikakHilton-2022-10-01-2022-11-01-2023-02-16T19:31:01.224464.csv'
     log_param("file_name", file_name)
-    
     df = load_raw_dataset(file_name)
     
     tweets = apply_filters(df)
     tweets = preprocess(tweets)
+    bow = get_bag_of_words(tweets)
     
     log_metric("tweets_count", len(tweets))
-    bow = get_bag_of_words(tweets)
     return None
 
 
