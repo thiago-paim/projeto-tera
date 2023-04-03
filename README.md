@@ -37,16 +37,17 @@ mlflow ui
 Principais pastas e arquivos do projeto:
 
 - `data/`: Armazena os datasets usados e gerados
-- `data/processed/`: Armazena os resultados dos nossos processamentos
-- `data/raw/`: Armazena os datasets iniciais "crus" (antes de qualquer processamento)
+    - `processed/`: Armazena os resultados dos nossos processamentos
+    - `raw/`: Armazena os datasets iniciais "crus" (antes de qualquer processamento)
 - `notebooks/`: Armazena os notebooks, usados para experimentos e provas de conceito
 - `src/`: Armazena os códigos dos pipelines e outros scripts
-- `src/flows/`: Cada arquivo contém um flow e suas tasks relacionadas
-- `src/common.py`: Funções de uso geral
-- `src/config.py`: Configurações e variáveis gerais do projeto
-- `src/feature_extraction.py`: Funções relacionadas a extração de features
-- `src/filters.py`: Funções relacionadas a remoção de linhas e colunas
-- `src/preprocess.py`: Funções relacionadas a pré-processamento de dados
+    - `flows/`: Cada arquivo contém um flow e suas tasks relacionadas
+    - `common.py`: Funções de uso geral
+    - `config.py`: Configurações e variáveis gerais do projeto
+    - `feature_extraction.py`: Funções relacionadas a extração de features
+    - `filters.py`: Funções relacionadas a remoção de linhas e colunas
+    - `models.py`: Funções relacionadas a modelos para treinamento e classificação
+    - `preprocess.py`: Funções relacionadas a pré-processamento de dados
 
 
 
