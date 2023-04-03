@@ -2,7 +2,10 @@ from mlflow import log_metric, log_param, log_artifacts
 import pandas as pd
 from prefect import flow, task, get_run_logger
 from ..common import load_raw_dataset, save_dataset, drop_duplicated_rows
-from ..preprocess import drop_unused_tweet_columns, filter_letters, remove_stopwords, lemmatize, tokenize, get_bag_of_words
+from ..feature_extraction import get_bag_of_words
+from ..filters import drop_unused_tweet_columns
+from ..preprocess import filter_letters, remove_stopwords, lemmatize
+
 
 
 @task
@@ -49,7 +52,7 @@ def process_erikas_tweets():
     df = load_tweets_dataset(file_name)
     
     tweets = get_tweets_by_username(df, username)
-    log_param("tweets_count", len(tweets))
+    log_metric("tweets_count", len(tweets))
     
     tweets = pre_process_tweets(tweets)
     bow = get_bag_of_words(tweets)
