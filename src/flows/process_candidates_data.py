@@ -1,9 +1,9 @@
 import pandas as pd
 from prefect import flow, task, get_run_logger
 import snscrape.modules.twitter as sntwitter
-from ..common import load_raw_dataset, save_dataset
-from ..filters import drop_duplicated_candidates
-from ..feature_extraction import get_twitter_username
+from src.common import load_raw_dataset, save_dataset
+from src.filters import drop_duplicated_candidates
+from src.feature_extraction import get_twitter_username
 
 
 @task
@@ -164,8 +164,8 @@ def process_candidates_data():
     logger.info("Starting Process Candidates data flow")
     
     df = process_candidates_dataset()
-    df = scrape_twitter_data(df)
-    df = scrape_tweets_count(df)
+    # df = scrape_twitter_data(df)
+    # df = scrape_tweets_count(df)
     return df.shape
 
 

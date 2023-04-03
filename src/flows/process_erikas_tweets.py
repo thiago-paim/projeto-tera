@@ -1,10 +1,10 @@
 from mlflow import log_metric, log_param, log_artifacts
 import pandas as pd
 from prefect import flow, task, get_run_logger
-from ..common import load_raw_dataset, save_dataset, drop_duplicated_rows
-from ..feature_extraction import get_bag_of_words
-from ..filters import drop_unused_tweet_columns
-from ..preprocess import filter_letters, remove_stopwords, lemmatize
+from src.common import load_raw_dataset, drop_duplicated_rows
+from src.feature_extraction import get_bag_of_words
+from src.filters import drop_unused_tweet_columns
+from src.preprocess import filter_letters, remove_stopwords, lemmatize
 
 
 

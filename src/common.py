@@ -1,5 +1,5 @@
 import pandas as pd
-from .config import PROCESSED_DATASETS_PATH, RAW_DATASETS_PATH
+from src.config import PROCESSED_DATASETS_PATH, RAW_DATASETS_PATH
 
 
 def load_raw_dataset(file_name: str, sep: str=';') -> pd.DataFrame:
