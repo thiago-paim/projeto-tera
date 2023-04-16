@@ -20,6 +20,7 @@ prefect cloud login
 ### Processamento de dados de candidatos
 ```
 python -m src.flows.process_candidates_data
+python -m src.flows.process_southeast_candidates_data
 ```
 ### Processamento de tweets
 ```

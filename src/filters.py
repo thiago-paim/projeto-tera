@@ -1,6 +1,15 @@
 import pandas as pd
 
 
+def drop_nans(X, y=None, subset=None):
+    return X.dropna(subset=subset)
+
+
+def drop_duplicate_rows(X, y=None, subset=None):
+    duplicate_rows = X[X.duplicated(subset=subset)].index
+    return X.drop(duplicate_rows)
+
+
 def drop_duplicated_candidates(df: pd.DataFrame) -> pd.DataFrame:
     # Lista obtida a partir da checagem manual das contas no Twitter
     drop_list = [180, 181, 579, 886, 2344, 2688, 2784, 3442, 3443]

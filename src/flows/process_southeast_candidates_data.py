@@ -1,9 +1,11 @@
 import pandas as pd
 from prefect import flow, task, get_run_logger
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer
 import snscrape.modules.twitter as sntwitter
 from src.common import load_raw_dataset, save_dataset
-from src.filters import drop_duplicated_rows
-from src.feature_extraction import get_twitter_username
+from src.filters import drop_nans, drop_duplicate_rows
+from src.feature_extraction import get_twitter_usernames, get_twitter_username_by_url
 
 
 @task
@@ -35,11 +37,19 @@ def merge_candidates_datasets() -> pd.DataFrame:
         how="left",
     )
 
-    # Extrai o username do Twitter a partir da URL
-    df["TW_USER"] = df.DS_URL.apply(get_twitter_username)
-
     # Salva dataset processado
     file_name = "se_candidates_output_1.csv"
+    save_dataset(df, file_name)
+
+    return df
+
+
+@task
+def apply_pipeline(df: pd.DataFrame, pipeline: Pipeline) -> pd.DataFrame:
+    df = pipeline.fit_transform(df)
+
+    # Salva dataset processado
+    file_name = "se_candidates_output_2.csv"
     save_dataset(df, file_name)
 
     return df
@@ -111,7 +121,7 @@ def scrape_twitter_data(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     # Salva dataset processado
-    file_name = "se_candidates_output_2.csv"
+    file_name = "se_candidates_output_3.csv"
     save_dataset(df, file_name)
 
     return df
@@ -157,7 +167,7 @@ def scrape_tweets_count(
     )
 
     # Salva dataset processado
-    file_name = "se_candidates_output_3.csv"
+    file_name = "se_candidates_output_4.csv"
     save_dataset(df, file_name)
 
     return df
@@ -176,8 +186,28 @@ def process_southeast_candidates_data():
     logger.info("Starting Process Southeast Candidates data flow")
 
     df = merge_candidates_datasets()
-    df = scrape_twitter_data(df)
-    df = scrape_tweets_count(df)
+
+    pipeline = Pipeline(
+        [
+            (
+                "get_twitter_usernames",
+                FunctionTransformer(get_twitter_usernames),
+            ),
+            (
+                "drop_nans",
+                FunctionTransformer(drop_nans, kw_args={"subset": "DS_URL"}),
+            ),
+            (
+                "drop_duplicate_rows",
+                FunctionTransformer(drop_duplicate_rows, kw_args={"subset": "DS_URL"}),
+            ),
+        ]
+    )
+
+    df = apply_pipeline(df, pipeline)
+
+    # df = scrape_twitter_data(df)
+    # df = scrape_tweets_count(df)
     return df.shape
 
 
