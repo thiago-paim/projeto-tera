@@ -1,5 +1,10 @@
 import pandas as pd
-from src.config import PROCESSED_DATASETS_PATH, RAW_DATASETS_PATH
+from src.config import PROCESSED_DATASETS_PATH, RAW_DATASETS_PATH, PROJECT_PATH
+
+
+def load_dataset(file_path: str, sep: str = ";") -> pd.DataFrame:
+    df = pd.read_csv(f"{PROJECT_PATH}/{file_path}", sep=sep)
+    return df
 
 
 def load_raw_dataset(file_name: str, sep: str = ";") -> pd.DataFrame:

@@ -2,6 +2,7 @@ import os
 from decouple import config
 
 
+PROJECT_PATH = os.path.join(os.getcwd())
 RAW_DATASETS_PATH = os.path.join(os.getcwd(), "data", "raw")
 PROCESSED_DATASETS_PATH = os.path.join(os.getcwd(), "data", "processed")
 
