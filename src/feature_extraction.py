@@ -1,16 +1,28 @@
+import os
+import ast
+import re
 import pandas as pd
 from scipy.sparse._csr import csr_matrix
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-def get_twitter_username(link):
+def get_twitter_username_by_url(url: str) -> str:
     """Extrai o username do Twitter a partir da URL"""
-    if link and isinstance(link, str):
-        link = link.rstrip("/")
-        username = link.split("/")[-1]
+    if url and isinstance(url, str):
+        url = url.rstrip("/")
+        username = url.split("/")[-1]
         username = username.split("?")[0]
-        return username.lower()
+        username = re.findall(r"\b[0-9A-zÀ-úü]+\b", username.lower())
+        return "".join(username)
     return None
+
+
+def get_twitter_usernames(
+    df: pd.DataFrame, url_col: str = "DS_URL", username_col: str = "TW_USER"
+) -> pd.DataFrame:
+    """Adiciona uma nova coluna ao DataFrame com os usernames do Twitter"""
+    df[username_col] = df[url_col].apply(get_twitter_username_by_url)
+    return df
 
 
 def tokenize(text):

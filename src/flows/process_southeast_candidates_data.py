@@ -206,8 +206,8 @@ def process_southeast_candidates_data():
 
     df = apply_pipeline(df, pipeline)
 
-    # df = scrape_twitter_data(df)
-    # df = scrape_tweets_count(df)
+    df = scrape_twitter_data(df)
+    df = scrape_tweets_count(df)
     return df.shape
 
 
