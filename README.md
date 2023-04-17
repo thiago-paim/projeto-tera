@@ -27,7 +27,12 @@ python -m src.flows.process_southeast_candidates_data
 python -m src.flows.process_erikas_tweets
 ```
 
-### Visualizando no MLflow
+### Amostragem de datasets
+```
+python -m src.flows.sample_dataset /data/raw/ErikakHilton-tweets.csv
+```
+
+## Visualizando no MLflow
 ```
 mlflow ui
 ```
