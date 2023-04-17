@@ -5,7 +5,7 @@ from sklearn.preprocessing import FunctionTransformer
 import snscrape.modules.twitter as sntwitter
 from src.common import load_raw_dataset, save_dataset
 from src.filters import drop_nans, drop_duplicate_rows
-from src.feature_extraction import get_twitter_usernames, get_twitter_username_by_url
+from src.feature_extraction import get_twitter_usernames
 
 
 @task

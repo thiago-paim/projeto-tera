@@ -1,12 +1,7 @@
 import sys
 import pandas as pd
 from prefect import flow, task, get_run_logger
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import FunctionTransformer
-import snscrape.modules.twitter as sntwitter
 from src.common import save_dataset, load_dataset
-from src.filters import drop_nans, drop_duplicate_rows
-from src.feature_extraction import get_twitter_usernames, get_twitter_username_by_url
 
 
 @task
