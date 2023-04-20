@@ -10,7 +10,7 @@ def get_sample(df: pd.DataFrame, sample_size: int = 100) -> pd.DataFrame:
     return sample_df
 
 
-@flow(name="Process Candidates data")
+@flow(name="Sample Dataset")
 def sample_dataset(file_path: str):
     SAMPLE_SIZE = 100
     logger = get_run_logger()
