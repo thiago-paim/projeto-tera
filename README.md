@@ -25,6 +25,7 @@ python -m src.flows.process_southeast_candidates_data
 ### Processamento de tweets
 ```
 python -m src.flows.process_erikas_tweets
+python -m src.flows.sentiment_analysis /data/processed/sample-100-ErikakHilton-tweets.csv
 ```
 
 ### Amostragem de datasets
