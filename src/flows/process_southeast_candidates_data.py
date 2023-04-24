@@ -64,6 +64,7 @@ def scrape_twitter_data(df: pd.DataFrame) -> pd.DataFrame:
     usernames = list(df["TW_USER"])
     logger.info(f"Scrapping Twitter data for {len(usernames)} users")
 
+    # To Do: Trocar esse código pela função no feature_extraction.py
     user_data = {}
     for i, username in enumerate(usernames):
         if not username:
@@ -78,9 +79,9 @@ def scrape_twitter_data(df: pd.DataFrame) -> pd.DataFrame:
                 "listedCount": last_tweet.user.listedCount,
                 "mediaCount": last_tweet.user.mediaCount,
             }
-            print(f"{i+1}/{len(usernames)} {username}: {user_data[username]}")
+            logger.info(f"{i+1}/{len(usernames)} {username}: {user_data[username]}")
         except Exception as e:
-            print(f"{i+1}/{len(usernames)} {username}: Erro {e}")
+            logger.error(f"{i+1}/{len(usernames)} {username}: Erro {e}")
             user_data[username] = {
                 "followersCount": 0,
                 "friendsCount": 0,
@@ -153,9 +154,9 @@ def scrape_tweets_count(
                 "posts": tweets,
                 "count": len(tweets),
             }
-            print(f"{i+1}/{len(usernames)} {username}: {len(tweets)} tweets")
+            logger.info(f"{i+1}/{len(usernames)} {username}: {len(tweets)} tweets")
         except Exception as e:
-            print(f"{i+1}/{len(usernames)} {username}: Erro {e}")
+            logger.error(f"{i+1}/{len(usernames)} {username}: Erro {e}")
             user_tweets[username] = {
                 "posts": [],
                 "count": 0,
