@@ -22,6 +22,11 @@ prefect cloud login
 python -m src.flows.process_candidates_data
 python -m src.flows.process_southeast_candidates_data
 ```
+
+### Atualização de dados do Twitter
+python -m src.flows.update_twitter_user_data data/processed/se_candidates_output_3.csv
+python -m src.flows.update_tweets_count data/processed/se_candidates_output_4.csv
+
 ### Processamento de tweets
 ```
 python -m src.flows.process_erikas_tweets
