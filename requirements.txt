@@ -1,3 +1,6 @@
+apache-airflow[celery]==2.6.1 --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.6.1/constraints-3.8.txt
+azure-identity==1.13.0
+azure-storage-blob==12.16.0
 jupyter==1.0.0
 jupyterlab==3.6.2
 leia-br==0.0.1
