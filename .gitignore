@@ -133,3 +133,7 @@ mlruns/
 
 # Temporary datasets
 data/temp/*
+
+# Airflow folders
+logs/
+plugins/
