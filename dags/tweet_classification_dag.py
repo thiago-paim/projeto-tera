@@ -12,7 +12,9 @@ AZURE_STORAGE_ACCOUNT_URL = "https://projetotera.blob.core.windows.net"
 AZURE_STORAGE_ACCOUNT_KEY = config("AZURE_STORAGE_ACCOUNT_KEY")
 AZURE_STORAGE_CONTAINER = "datasets"
 
-PROJECT_PATH = Path.cwd().resolve().parent
+# Retorna o path de onde o airflow foi chamado, e não deste arquivo
+# Desta forma só funciona se chamar o airflor da pasta raiz do projeto
+PROJECT_PATH = Path().cwd().resolve()
 TEMP_DATASETS_PATH = PROJECT_PATH.joinpath("data/temp")
 
 
@@ -22,7 +24,7 @@ TEMP_DATASETS_PATH = PROJECT_PATH.joinpath("data/temp")
     catchup=False,
     tags=["classification"],
 )
-def tweet_classification_dag():
+def tweet_classification_dag(file_name="erika-short.csv"):
     @task()
     def load_data(file_name, container_name=AZURE_STORAGE_CONTAINER, sep=";"):
         temp_file_path = TEMP_DATASETS_PATH.joinpath(file_name)
@@ -47,6 +49,7 @@ def tweet_classification_dag():
         col="rawContent",
         model_name="ruanchaves/bert-large-portuguese-cased-hatebr",
     ):
+        # To Do: Rodar em batches
         classifier = pipeline("sentiment-analysis", model=model_name)
         results = df[col].apply(classifier)
 
@@ -68,7 +71,9 @@ def tweet_classification_dag():
         container_client = service_client.get_container_client(container_name)
 
         with open(file=temp_file_path, mode="rb") as data:
-            container_client.upload_blob(name=output_file_name, data=data)
+            container_client.upload_blob(
+                name=output_file_name, data=data, overwrite=True
+            )
 
     @task()
     def cleanup(file_name):
@@ -76,7 +81,6 @@ def tweet_classification_dag():
         # https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli#delete-a-container
         pass
 
-    file_name = "erika-short.csv"
     df = load_data(file_name=file_name)
     df = classify(df)
     export(df, file_name=file_name)
