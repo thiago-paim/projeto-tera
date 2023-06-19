@@ -1,24 +1,53 @@
 import sys
+from time import time
 import pandas as pd
 import prefect
 from prefect import flow, task, get_run_logger
 from src.common import save_dataset, load_dataset, download_blob, upload_blob
 from transformers import pipeline
+import torch
+from tqdm import tqdm
 
 
 @task
 def classify(df: pd.DataFrame, batch_size: int = 50) -> pd.DataFrame:
+    logger = get_run_logger()
     model_name = "ruanchaves/bert-large-portuguese-cased-hatebr"
     col = "rawContent"
 
+    tqdm.pandas()
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     # To Do: Rodar em batches
-    classifier = pipeline("sentiment-analysis", model=model_name)
-    results = df[col].apply(classifier)
+    if device.type == "cuda":
+        classifier = pipeline("sentiment-analysis", model=model_name, device=0)
+    else:
+        classifier = pipeline("sentiment-analysis", model=model_name)
+
+    logger.info(f"Starting classification; {device=}")
+    t1 = time()
+    results = df[col].progress_apply(classifier)
+    t2 = time()
+    logger.info(f"Finished classification in {t2-t1:.3f} seconds; {device=}")
+
+    # for bs in [1, 8, 64, 256]:
+    #     print("-" * 30)
+    #     print(f"Streaming batch_size={bs}")
+    #     for out in pipe(dataset, bs=bs), total=len(dataset):
+    #         pass
 
     df["class_label"] = results.apply(lambda x: x[0]["label"])
     df["class_score"] = results.apply(lambda x: x[0]["score"])
 
     return df
+
+
+@task()
+def cleanup(file_name):
+    # To Do: Apagar arquivo temporário para limpar espaço
+    # https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli#delete-a-container
+    pass
 
 
 @flow(name="Classify Tweets")
@@ -35,8 +64,13 @@ def classify_tweets(file_name: str = "erika-short.csv"):
 
     upload_blob(df, file_name)
 
+    # cleanup(file_name)
+
     return df.shape
 
 
 if __name__ == "__main__":
-    classify_tweets(file_name=sys.argv[1])
+    # import pdb; pdb.set_trace()
+    if len(sys.argv) > 1:
+        classify_tweets(file_name=sys.argv[1])
+    classify_tweets()
