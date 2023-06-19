@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 
 @task
-def classify(df: pd.DataFrame, batch_size: int = 30) -> pd.DataFrame:
+def classify(df: pd.DataFrame, batch_size: int = 50) -> pd.DataFrame:
     logger = get_run_logger()
     model_name = "ruanchaves/bert-large-portuguese-cased-hatebr"
     col = "rawContent"
@@ -19,7 +19,6 @@ def classify(df: pd.DataFrame, batch_size: int = 30) -> pd.DataFrame:
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # To Do: Rodar em batches
     if device.type == "cuda":
         classifier = pipeline("sentiment-analysis", model=model_name, device=0)
     else:
@@ -28,14 +27,8 @@ def classify(df: pd.DataFrame, batch_size: int = 30) -> pd.DataFrame:
     t1 = time()
     num_batches = len(df) // batch_size + 1
     logger.info(
-        f"Starting classification: {df.shape=}, {batch_size=}, {num_batches=}, {device=}"
+        f"\nStarting classification: {df.shape=}, {batch_size=}, {num_batches=}, {device=}"
     )
-
-    # for bs in [1, 25, 50, 100]:
-    #     print("-" * 30)
-    #     print(f"Streaming batch_size={bs}")
-    #     for out in pipe(dataset, bs=bs), total=len(dataset):
-    #         pass
 
     results = []
     for i in tqdm(range(num_batches)):
@@ -52,16 +45,6 @@ def classify(df: pd.DataFrame, batch_size: int = 30) -> pd.DataFrame:
 
     df["class_label"] = [result["label"] for result in results]
     df["class_score"] = [result["score"] for result in results]
-
-    # # Without batching
-    # t1 = time()
-    # logger.info(f"Starting classification; {device=}")
-    # results = df[col].progress_apply(classifier)
-    # t2 = time()
-    # logger.info(f"Finished classification in {t2-t1:.3f} seconds; {device=}")
-
-    # df["class_label"] = results.apply(lambda x: x[0]["label"])
-    # df["class_score"] = results.apply(lambda x: x[0]["score"])
 
     return df
 
@@ -90,7 +73,6 @@ def classify_tweets(file_name: str = "erika-short.csv"):
 
 
 if __name__ == "__main__":
-    # import pdb; pdb.set_trace()
     if len(sys.argv) > 1:
         classify_tweets(file_name=sys.argv[1])
     else:
