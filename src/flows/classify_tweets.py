@@ -3,14 +3,14 @@ from time import time
 import pandas as pd
 import prefect
 from prefect import flow, task, get_run_logger
-from src.common import save_dataset, load_dataset, download_blob, upload_blob
+from src.common import download_blob, upload_blob
 from transformers import pipeline
 import torch
 from tqdm import tqdm
 
 
 @task
-def classify(df: pd.DataFrame, batch_size: int = 50) -> pd.DataFrame:
+def classify(df: pd.DataFrame, batch_size: int = 30) -> pd.DataFrame:
     logger = get_run_logger()
     model_name = "ruanchaves/bert-large-portuguese-cased-hatebr"
     col = "rawContent"
@@ -25,20 +25,43 @@ def classify(df: pd.DataFrame, batch_size: int = 50) -> pd.DataFrame:
     else:
         classifier = pipeline("sentiment-analysis", model=model_name)
 
-    logger.info(f"Starting classification; {device=}")
     t1 = time()
-    results = df[col].progress_apply(classifier)
-    t2 = time()
-    logger.info(f"Finished classification in {t2-t1:.3f} seconds; {device=}")
+    num_batches = len(df) // batch_size + 1
+    logger.info(
+        f"Starting classification: {df.shape=}, {batch_size=}, {num_batches=}, {device=}"
+    )
 
-    # for bs in [1, 8, 64, 256]:
+    # for bs in [1, 25, 50, 100]:
     #     print("-" * 30)
     #     print(f"Streaming batch_size={bs}")
     #     for out in pipe(dataset, bs=bs), total=len(dataset):
     #         pass
 
-    df["class_label"] = results.apply(lambda x: x[0]["label"])
-    df["class_score"] = results.apply(lambda x: x[0]["score"])
+    results = []
+    for i in tqdm(range(num_batches)):
+        batch_start = i * batch_size
+        batch_end = min((i + 1) * batch_size, len(df))
+        batch_texts = df[col][batch_start:batch_end].tolist()
+        batch_results = classifier(batch_texts)
+        results += batch_results
+
+    t2 = time()
+    logger.info(
+        f"Finished classification in {t2-t1:.3f} seconds; {df.shape=}, {batch_size=}, {num_batches=}, {device=}"
+    )
+
+    df["class_label"] = [result["label"] for result in results]
+    df["class_score"] = [result["score"] for result in results]
+
+    # # Without batching
+    # t1 = time()
+    # logger.info(f"Starting classification; {device=}")
+    # results = df[col].progress_apply(classifier)
+    # t2 = time()
+    # logger.info(f"Finished classification in {t2-t1:.3f} seconds; {device=}")
+
+    # df["class_label"] = results.apply(lambda x: x[0]["label"])
+    # df["class_score"] = results.apply(lambda x: x[0]["score"])
 
     return df
 
@@ -59,11 +82,8 @@ def classify_tweets(file_name: str = "erika-short.csv"):
 
     file_path = download_blob(file_name)
     df = pd.read_csv(file_path, sep=";")
-
     df = classify(df)
-
     upload_blob(df, file_name)
-
     # cleanup(file_name)
 
     return df.shape
@@ -73,4 +93,5 @@ if __name__ == "__main__":
     # import pdb; pdb.set_trace()
     if len(sys.argv) > 1:
         classify_tweets(file_name=sys.argv[1])
-    classify_tweets()
+    else:
+        classify_tweets()
