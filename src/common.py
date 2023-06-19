@@ -1,4 +1,5 @@
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from datetime import datetime
 import pandas as pd
 from src.config import (
     AZURE_STORAGE_ACCOUNT_KEY,
@@ -27,7 +28,7 @@ def download_blob(file_name: str) -> str:
     return temp_file_path
 
 
-def upload_blob(df, file_name: str, sep=";"):
+def upload_blob(df, file_name: str, sep=";", add_time_signature=True):
     temp_file_path = f"{TEMP_FILES_PATH}/{file_name}"
     df.to_csv(f"{temp_file_path}", sep=sep, encoding="utf-8", index=False)
 
@@ -35,6 +36,11 @@ def upload_blob(df, file_name: str, sep=";"):
         account_url=AZURE_STORAGE_ACCOUNT_URL, credential=AZURE_STORAGE_ACCOUNT_KEY
     )
     container_client = service_client.get_container_client(AZURE_STORAGE_CONTAINER)
+
+    if add_time_signature:
+        signature = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        name, extension = file_name.split(".")
+        file_name = f"{name}-{signature}.{extension}"
 
     with open(file=temp_file_path, mode="rb") as data:
         container_client.upload_blob(name=file_name, data=data, overwrite=True)
