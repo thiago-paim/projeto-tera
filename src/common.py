@@ -28,7 +28,7 @@ def download_blob(file_name: str) -> str:
     return temp_file_path
 
 
-def upload_blob(df, file_name: str, sep=";", add_time_signature=True):
+def upload_blob(df, file_name: str, sep: str = ";", add_time_signature: bool = True):
     temp_file_path = f"{TEMP_FILES_PATH}/{file_name}"
     if add_time_signature:
         signature = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -61,5 +61,13 @@ def load_processed_dataset(file_name: str, sep: str = ";") -> pd.DataFrame:
     return df
 
 
-def save_dataset(df: pd.DataFrame, file_name: str, sep: str = ";") -> None:
-    df.to_csv(f"{PROCESSED_DATASETS_PATH}/{file_name}", sep=sep, index=False)
+def save_dataset(
+    df: pd.DataFrame, file_name: str, sep: str = ";", add_time_signature: bool = True
+) -> str:
+    if add_time_signature:
+        signature = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        name, extension = file_name.split(".")
+        file_name = f"{name}-{signature}.{extension}"
+    full_path = f"{PROCESSED_DATASETS_PATH}/{file_name}"
+    df.to_csv(full_path, sep=sep, index=False)
+    return full_path
