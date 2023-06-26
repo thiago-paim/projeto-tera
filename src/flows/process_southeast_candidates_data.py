@@ -133,7 +133,7 @@ def scrape_tweets_count(
     df: pd.DataFrame, since: str = "2022-09-01", until: str = "2022-11-01"
 ) -> pd.DataFrame:
     """
-    Realiza o scraping dos tweets dos candidatos no período solicitado, e adiciona no DataFrame.
+    Realiza o scraping dos tweets dos candidatos no período solicitado e adiciona a contagem no DataFrame.
     """
     logger = get_run_logger()
     usernames = list(df["TW_USER"])
