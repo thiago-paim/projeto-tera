@@ -3,7 +3,12 @@ from time import time
 import pandas as pd
 import prefect
 from prefect import flow, task, get_run_logger
-from src.common import download_blob, upload_blob, load_processed_dataset, save_dataset
+from src.common import (
+    download_blob,
+    upload_blob,
+    load_processed_dataset,
+    save_local_dataset,
+)
 from transformers import pipeline
 import torch
 from tqdm import tqdm
@@ -78,7 +83,7 @@ def classify_tweets(
     if source == "azure":
         upload_blob(df, file_name)
     else:
-        save_dataset(df, file_name)
+        save_local_dataset(df, file_name)
     # cleanup(file_name)
 
     return df.shape

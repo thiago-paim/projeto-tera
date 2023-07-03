@@ -1,7 +1,7 @@
 import pandas as pd
 from prefect import flow, task, get_run_logger
 import snscrape.modules.twitter as sntwitter
-from src.common import load_raw_dataset, save_dataset
+from src.common import load_raw_dataset, save_local_dataset
 from src.filters import drop_duplicated_candidates
 from src.feature_extraction import get_twitter_username
 
@@ -42,7 +42,7 @@ def merge_candidates_datasets() -> pd.DataFrame:
 
     # Salva dataset processado
     file_name = "candidates_output_1.csv"
-    save_dataset(df, file_name)
+    save_local_dataset(df, file_name)
 
     return candidates_df
 
@@ -114,7 +114,7 @@ def scrape_twitter_data(df: pd.DataFrame) -> pd.DataFrame:
 
     # Salva dataset processado
     file_name = "candidates_output_2.csv"
-    save_dataset(df, file_name)
+    save_local_dataset(df, file_name)
 
     return df
 
@@ -160,7 +160,7 @@ def scrape_tweets_count(
 
     # Salva dataset processado
     file_name = "candidates_output_3.csv"
-    save_dataset(df, file_name)
+    save_local_dataset(df, file_name)
 
     return df
 

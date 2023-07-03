@@ -1,5 +1,5 @@
 from prefect import flow, get_run_logger
-from src.common import load_dataset, save_dataset
+from src.common import load_local_dataset, save_local_dataset
 from src.feature_extraction import get_tweets_count
 import sys
 
@@ -9,7 +9,7 @@ def update_tweets_count(file_path: str):
     logger = get_run_logger()
     logger.info(f"Starting Update Tweets count flow for file_path={file_path}")
 
-    df = load_dataset(file_path)
+    df = load_local_dataset(file_path)
     usernames = list(df["TW_USER"])  # Filtrar somente os que não tem os campos
     logger.info(f"{len(usernames)} Tweet counts to be updated")
 
@@ -23,7 +23,7 @@ def update_tweets_count(file_path: str):
     # Salva dataset processado
     file_name = file_path.split("/")[-1]
     logger.info(f"Saving results on {file_name}")
-    save_dataset(df, file_name)
+    save_local_dataset(df, file_name)
 
 
 if __name__ == "__main__":

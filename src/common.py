@@ -46,7 +46,7 @@ def upload_blob(df, file_name: str, sep: str = ";", add_time_signature: bool = T
         container_client.upload_blob(name=file_name, data=data, overwrite=True)
 
 
-def load_dataset(file_path: str, sep: str = ";") -> pd.DataFrame:
+def load_local_dataset(file_path: str, sep: str = ";") -> pd.DataFrame:
     df = pd.read_csv(f"{PROJECT_PATH}/{file_path}", sep=sep)
     return df
 
@@ -61,7 +61,7 @@ def load_processed_dataset(file_name: str, sep: str = ";") -> pd.DataFrame:
     return df
 
 
-def save_dataset(
+def save_local_dataset(
     df: pd.DataFrame, file_name: str, sep: str = ";", add_time_signature: bool = True
 ) -> str:
     if add_time_signature:
