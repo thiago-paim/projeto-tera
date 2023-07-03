@@ -32,7 +32,7 @@ python -m src.flows.update_tweets_count data/processed/se_candidates_output_4.cs
 python -m src.flows.process_erikas_tweets
 python -m src.flows.sentiment_analysis /data/processed/sample-100-ErikakHilton-tweets.csv
 
-python -m src.flows.classify_tweets erika-short.csv
+python -m src.flows.classify_tweets erika-short.csv local content
 ```
 
 ### Amostragem de datasets
