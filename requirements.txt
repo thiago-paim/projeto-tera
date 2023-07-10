@@ -19,4 +19,4 @@ torchvision==0.15.1
 tqdm==4.64.1
 transformers==4.28.1
 wordcloud==1.8.2.2
-git+https://github.com/JustAnotherArchivist/snscrape.git
+snscrape==0.6.2.20230320
