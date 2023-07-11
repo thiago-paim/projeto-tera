@@ -33,6 +33,8 @@ python -m src.flows.process_erikas_tweets
 python -m src.flows.sentiment_analysis /data/processed/sample-100-ErikakHilton-tweets.csv
 
 python -m src.flows.classify_tweets erika-short.csv local content
+python -m src.flows.classify_tweets sp_elected_state_deputies_tweets.csv local content
+
 ```
 
 ### Amostragem de datasets
