@@ -119,7 +119,7 @@ def cleanup(file_name):
 
 @flow(name="Classify Tweets")
 def classify_tweets(
-    file_name: str = "sp_elected_state_deputies_tweets.csv",
+    file_name: str = "sp_elected_stdep_tweets.csv",
     source: str = "azure",
     col_name: str = "content",
 ):
