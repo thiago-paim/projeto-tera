@@ -33,7 +33,8 @@ python -m src.flows.process_erikas_tweets
 python -m src.flows.sentiment_analysis /data/processed/sample-100-ErikakHilton-tweets.csv
 
 python -m src.flows.classify_tweets erika-short.csv local content
-python -m src.flows.classify_tweets sp_elected_state_deputies_tweets.csv local content
+python -m src.flows.classify_tweets sp_elected_stdep_tweets.csv local content
+python -m src.flows.classify_tweets_2_0 sp_elected_stdep_tweets.csv local content
 
 ```
 
@@ -70,3 +71,13 @@ Principais pastas e arquivos do projeto:
 
 ## Fonte de dados
 Dados sobre candidatos extraídos do [Portal de Dados Abertos do TSE](https://dadosabertos.tse.jus.br/dataset/candidatos-2022).
+
+
+
+
+### To Do:
+
+- Melhorar análise dos dados (visualização)
+- Rodar classificador refinado
+- Rodar embedding e PCA para gerar os gráficos de similaridade das palavras por politico
+- Rodar word cloud por politico
