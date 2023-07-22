@@ -133,3 +133,6 @@ mlruns/
 
 # Temporary datasets
 temp/*
+
+# Modelos de classificação
+*/fine_tuned_model/*
