@@ -78,6 +78,5 @@ Dados sobre candidatos extraídos do [Portal de Dados Abertos do TSE](https://da
 ### To Do:
 
 - Melhorar análise dos dados (visualização)
-- Rodar classificador refinado
 - Rodar embedding e PCA para gerar os gráficos de similaridade das palavras por politico
 - Rodar word cloud por politico

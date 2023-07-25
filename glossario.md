@@ -37,4 +37,7 @@ prop_activity_cols = ['TW_avg_thread_user_tts', 'TW_avg_thread_part', 'TW_avg_re
 thread_comp_cols = ['TW_user_thread_tts', 'TW_reply_thread_tts', 'TW_non_reply_thread_tts']
 offense_count_cols = ['TW_user_offs', 'TW_reply_offs', 'TW_thread_offs']
 offense_prop_cols = ['TW_offs_per_thread', 'TW_user_offs_rate', 'TW_reply_offs_rate', 'TW_thread_offs_rate']
+
+
+selected_cols = ['TW_threads', 'TW_avg_thread_user_tts', 'TW_avg_thread_tts', 'TW_offs_per_thread', 'TW_thread_offs_rate']
 ```
