@@ -135,4 +135,4 @@ mlruns/
 temp/*
 
 # Modelos de classificação
-*/fine_tuned_model/*
+*/fine_tuned_model*
