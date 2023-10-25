@@ -67,16 +67,6 @@ Principais pastas e arquivos do projeto:
     - `preprocess.py`: Funções relacionadas a pré-processamento de dados
 
 
-
-
 ## Fonte de dados
 Dados sobre candidatos extraídos do [Portal de Dados Abertos do TSE](https://dadosabertos.tse.jus.br/dataset/candidatos-2022).
-
-
-
-
-### To Do:
-
-- Melhorar análise dos dados (visualização)
-- Rodar embedding e PCA para gerar os gráficos de similaridade das palavras por politico
-- Rodar word cloud por politico
+  
